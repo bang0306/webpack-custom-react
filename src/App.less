@@ -1,0 +1,139 @@
+@import './common/preset.less';
+
+body {
+    font-size: 15px;
+    position: static;
+    z-index: 1;
+    background-color: #f0f0f0;
+    font-family: Helvetica Neue, Helvetica, Roboto, "Hiragino Sans GB", "STHeiti", sans-serif;
+    margin: 0;
+}
+
+.queue-section {
+    background: #fff;
+    margin-top: 10px;
+
+    .title {
+        padding: 18px 15px 19px 15px;
+        .main-title {
+            font-size: 18px;
+            color: #333;
+        }
+        .sub-title {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+    }
+
+    .status-header {
+        .horizontal-flex();
+        .align-items(center);
+        padding: 12px 0 10.5px 15px;
+        .borderB(#d7d7d7);
+
+        .status-header-caption {
+            font-size: 14px;
+            color: #999;
+        }
+        .status-header-item {
+            font-size: 12px;
+            padding: 0 8px;
+            border-radius: 2px;
+            margin-left: 4px;
+            .border-box();
+            // box-sizing: border-box;
+        }
+        .status-header-ample {
+            border: 1px solid #04c80d;
+            color: #04c80d;
+        }
+        .status-header-tension {
+            border: 1px solid #ff7243;
+            color: #ff7243;
+        }
+        .status-header-full {
+            border: 1px solid #999;
+            color: #999;
+        }
+    }
+
+    .table-status-wrapper {
+        padding: 15px 15px 15px 30px;
+        .table-status-row {
+            .horizontal-flex();
+            .align-items(center);
+            .justify-content(space-between);
+            margin-bottom: 26px;
+            .table-status-item {
+                .flex(1, 0, 123px);
+                .horizontal-flex();
+                .align-items(flex-start);
+                .table-status-item-icon {
+                    width: 18.5px;
+                    height: 18.5px;
+                }
+                &.item-ample {
+                    .table-status-item-icon {
+                        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAMAAACfvvDEAAAAhFBMVEUAAACAtn6CuIKBtn+Ct4CBtn2Btn6DtX6Ct3+CtoGDt4CFuYCHuYKBtn6Bt3+Bt3+Btn6CuICBt4CBtoCAtX7////3+vfb6tq11LSmy6TJ4Mi717qv0K6HuYXE3cPA2r/Y6NeTwJKJuojr8+qXwpWEt4Pz+PLO4s2pzajt9OzQ5M+jyaLhapruAAAAFHRSTlMA9Tbaf/D4a2ZMRCwZ78XZ0p2cxuUsfu4AAAF/SURBVDjLlZWJcoMgEIYFpfE2B6B4aw6T9v3fr06bDQTNNv1nktGdb3ZXflgcWzENfM8PaOygijyXMEY4YQlxveglF2bkg2t9kCxc5WhKuC1yoEtwA5zFbmxwD+AC3T+D2wWh0a0J7ghHtF/tEe+VziCOwgqkZnRQRdVVhRrM4OG+4I+U5zqXx7xsu7bMjzKvz4+kvxa48F5c+uvIQeO1vxTwkv14DSkrcbL6O8kSkkYz6d29VrLhthqh7nvAM4p3ncnYQXfej1BciZWcUkH52KEMwqVc9ClKeEyoEyQc+3YQCxx/ro6tJ1T3HY+DtEcSPDLk6ZyGxIr1PvSJkNAnZe+R1InfrB5rj3DSBd9REnyPrPKjqkX9Bc4ae8kq30iZT+Izl/0Tm8Ge1y6Jaf6/zb9emCnDxTlqBFhdmmS6cjaH421qq3aSYrTO5vK8n+qqrerhxWzaQfDvybRFhoOeS/hkIrv/z098Jqd0fc671px3Q/zuSAgnCUPvDvw++gYoJWG5rI2xBAAAAABJRU5ErkJggg==) no-repeat;
+                        background-size: 100%;
+                    }
+                    .item-info-row2 {
+                        color: #80b57e;
+                    }
+                }
+                &.item-tension {
+                    .table-status-item-icon {
+                        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAMAAACfvvDEAAAAllBMVEUAAAD/ZjL/ZjP/ZjP/ZjP/ZzP/ZjL/ZzL/ZjL/ZzT/ZzX/aDT/Zzb/aDb/aDT/aTf/ZjL/aDT/ZzP/ZjL/ZzP/aDT/ZzT/ZjP/////9vP/08T/poj/vqn/rZH/uKH/nn3/ckL/bj3/fVL/8Ov/5t7/0MD/k2//glf/bDv/tJv/mHb/lXL/x7T/spn/6OD/xLD/oYL/kWwyj1hvAAAAF3RSTlMA9Pbw2v34fmtmTEQ5MywZ8sXSnZyAxn+gvWgAAAGPSURBVDjLnZVpc4IwEIYJBDmUAqJuwi3e4tH+/z9X25qDBDNOnw8MMO9skn13N5ZKHIXBMgij2DLy4WHbcWz38UDY+3ipm2I0AcEE4emobpYiUElWM13oJy7ouImvChcIxkGLoXAOL7HnsjCzwYAU1UdgAvn81AjMJCwDqXzqbl9U16rYd3IGVs+E85DHJqfbvKyvdZlvad4cedA/CzD7Lja7c8sDtefdpmAf+NdrFrIiBxhyoCU71E8NeE+ve7oGlTXpnzXgSYufTrKG/xTLxyzpPRmJSXvmVGxFDvtdUm2fpGSvTmSFDpjOzpWhFTxWN+WTrR5YS26Q8IgyjwTukseUISAQMUPHrBT7jN5URiKfZiWKhUdmJRa+m5UTj9eSoN03pPnizopaUpZvKc0v5JLTfKDFrOaFS+T+eN4A3B2RQ061PloTZnUpKd10pDe77e1eV/VlQ1qlN7V+dw+fVV01ndLvjAwM2IvBXDKMm7k1IHs56zJtfqLR+Yn892YySmf/n/P63WGb7g7zffQNalVv2aLoHPsAAAAASUVORK5CYII=) no-repeat;
+                        background-size: 100%;
+                    }
+                    .item-info-row2 {
+                        color: #f63;
+                    }
+                }
+                &.item-full {
+                    .table-status-item-icon {
+                        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAMAAACfvvDEAAAAb1BMVEUAAADHx8fHx8fJycnGxsbIyMjHx8fIyMjIyMjIyMjIyMjIyMjLy8vHx8fIyMjHx8fGxsbIyMjOzs7MzMzJycnGxsbJycn////7+/vu7u7b29vm5ubj4+PW1tbf39/Pz8/29vbq6urY2NjQ0ND19fXyZBuCAAAAFXRSTlMA9fA293/Zxp1rTEQs2tnSZ2YaGX/sTANlAAABgElEQVQ4y52VCa6DIBRFGUStWttqkUFxaLv/Nf4O8kBrifkn0QRyc8E3idZUNDuzc0YrFKRgMSYE89crvhY/dXmJI+6IcJlv6miC+RqS0G/hgfAtyGEtTDHfBqdL4Yn/JDotHCMewHM9YB4Cw10p5mGIjUDi7w5G912vzeBvJnPAwbLRSj5U23Ztqx5S6QZMPyk42rWW6taAT3NTUttF+c61tezFnS+5y9Z+1KsG2BwhI8HP+QozB/X6VMbzbtf5mvVmjFBtDzdiw1Mae3yFKFRGK7/uKVovpBnhoW8HZYYun9MhnuMcz/EdTwCfEYOFy5GEHDkYePoIfwGeGQkr3T3pTiVF9c7TK5ejsDJ2eQ8rIwa15GiMFto0q8MLqE+XaakmMSmpFtoSah6EYnq+x+ejhG+ZQx85ZW/rxVcmG705jOPU9d0kReMHc7Pfh3dvDst+B1IeIEoXcykwbk7/mHVw1/BMCs9knNDtOX9czfljvu/fwQoUpKbZhV0yWqMVf3orZHzqFGjcAAAAAElFTkSuQmCC) 100%;
+                        background-size: 100%;
+                    }
+                    .item-info-row2 {
+                        color: #999;
+                    }
+                }
+            }
+            .table-status-item-info {
+                margin-left: 10px;
+                .item-info-title {
+                    color: #333;
+                    font-size: 15px;
+                }
+                .item-info-capacity {
+                    margin-left: 5px;
+                    color: #999;
+                    font-size: 12px;
+                }
+            }
+            .item-info-row2 {
+                color: #999;
+                font-size: 12px;
+                margin-top: 5px;
+            }
+        }
+        .table-status-row:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .status-footer {
+        padding: 10px 0 13.5px 16px;
+        color: #999;
+        font-size: 12px;
+        .borderT(#d7d7d7);
+    }
+}
+
+.tips-bottom {
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 15px;
+}
