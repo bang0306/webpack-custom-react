@@ -1,188 +1,84 @@
-import React, { Component, PureComponent } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
-import Error from './Error';
-// import logo from './logo.svg';
+import BScroll from 'better-scroll'
 import './App.less';
 
-class QueueInfo extends BaseComponent {
+class App extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            error: false,
-            loaded: false,
-            errMsg: '',
+            show: true,
+            currentSelectedItemIndex: 0
         }
+        this.onCancel = this.onCancel.bind(this);
     }
-
-    static run() {
-        render(<QueueInfo />, document.getElementById('queue-info'));
-    }
-
     componentDidMount() {
-        const self = this;
-        let pvType;
-        Ajax.get({
-            url: Ajax.apiConfig.QUEUE_INFO,
-            data: {
-                shopId
+        let scroll = new BScroll('.picker-scroll', {
+            wheel:{
+                selectedIndex: 0,
+                wheelWrapperClass: 'wheel-scroll',
+                wheelItemClass: 'wheel-item'
             },
-            success(res) {
-                if (res.get('code') == 200) {
-                    const result = res.get('data').toJS();
-                    pvType = result.type + 1;
-                    self.setState({
-                        ...result,
-                        error: false,
-                        loaded: true,
-                    });
-                    document.title = result.shopName || '排队';
-                } else {
-                    pvType = 3;
-                    self.setState({
-                        error: true,
-                        errMsg: res.get('errMsg')
-                    })
-                }
-                sendPV({
-                    shopId,
-                    type: pvType
-                });
-            },
-            error(e) {
-                sendPV({
-                    shopId,
-                    type: 3
-                 });
-                self.setState({
-                    error: true
-                });
-                console.log(e);
+            probeType: 3
+        });
+        this.wheel = scroll;
+        this.wheel.on('change', () => {
+            this.currentSelectedItemIndex = this.wheel.getSelectedIndex();
+            console.log(this.currentSelectedItemIndex);
+        })
+    }
+
+    onCancel() {
+        this.setState(() => {
+            return {
+                show: !this.state.show
             }
         });
     }
-
-    getStatusText(statusCode) {
-        switch (statusCode) {
-            case 1:
-                return '充裕';
-            case 2:
-                return '紧张';
-            case 3:
-                return '已满';
-            default:
-                return '';
-        }
-    }
-
-    getStatusStyle(statusCode) {
-        if (this.state.type === 1) {
-            return 'item-full'
-        }
-        switch (statusCode) {
-            case 1:
-                return 'item-ample';
-            case 2:
-                return 'item-tension';
-            case 3:
-                return 'item-full';
-            default:
-                return ''
-
-        }
-    }
-
-    renderTitle() {
+    render() {
         return (
-            <div className="queue-section">
-                <div className="title">
-                    <div className={"main-title"}>
-                        { this.state.mainTitle }
-                    </div>
-                    {
-                        this.state.type === 0 ? (
-                            <div className="sub-title">
-                                { this.state.subTitle }
+            <div className="picker">
+                {
+                    this.state.show &&
+                    <div className="picker-mask">
+
+                        <div className="picker-panel">
+                            <div className="picker-bar">
+                                <div className="picker-cancel" onClick={this.onCancel}>{ this.props.cancelText || '取消'}</div>
+                                <div className="picker-title">{ this.props.title || ''}</div>
+                                <div className="picker-confirm">{ this.props.confirmText || '确定'}</div>
                             </div>
-                        ) : null
-                    }
-                </div>
-            </div>
-        )
-    }
+                            <div className="picker-scroll">
 
-    renderTableStatus(list) {
-        const tableStatusCaption = this.state.type === 0 ? '实时桌位信息:' : '餐厅桌位信息:';
-
-        let tableStausList = [];
-        if (list && list.length) {
-            for (var i = 0; i < list.length; i++) {
-                let arr = [];
-                arr.push(list[i]);
-                if (list[i+1]) {
-                    arr.push(list[++i])
-                }
-                tableStausList.push(arr);
-            }
-        }
-        return (
-            <div className="queue-section">
-                <div className="status-header">
-                    <span className="status-header-caption">{tableStatusCaption}</span>
-                </div>
-                <div className="table-status-wrapper">
-                    {
-                        tableStausList.map((pair, idx) => {
-                            return (
-                                <div className="table-status-row" key={idx}>
+                                <div className="wheel-scroll">
                                     {
-                                        pair.map((item, idx) => {
-
-                                            const tableStatusStyle = this.getStatusTextStyle(item.availability);
+                                        this.props.data.map((item) => {
                                             return (
-                                                <div className={`table-status-item ${getStatusStyle(item.availability)}`} key={idx}>
-                                                    <div className="table-status-item-icon"></div>
-                                                    <div className="table-status-item-info">
-                                                        <div>
-                                                            <span className="item-info-title">{item.tableTitle}</span>
-                                                            <span className="item-info-capacity">({item.tableDesc})</span>
-                                                        </div>
-                                                        <div className={`item-info-row2`}>
-                                                            {this.state.type === 0 ? this.getStatusText(item.availability) : `共${item.tableCapacity}桌`}
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div key={item.text} className="wheel-item">{ item.text }</div>
                                             )
                                         })
                                     }
                                 </div>
-                            )
-                        })
-                    }
-                </div>
-                <div className="status-footer">
-                    {this.state.hint}
-                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         )
     }
-
-    render() {
-        if (this.state.error) {
-            return (
-                <div>
-                    <Error text={this.state.errMsg} />
-                </div>
-            );
-        } else {
-            return this.state.loaded ? (
-                <div>
-                    { this.renderTitle() }
-                    { this.renderTableStatus(this.state.tableStatusList) }
-                    <div className="tips-bottom">由美团排队提供服务</div>
-                </div>
-            ) : null;
-        }
-    }
 }
-
-render(<QueueInfo />, document.getElementById('root'));
+const data = [
+    {
+        text: '哈哈',
+        value: 0
+    },
+    {
+        text: '呵呵',
+        value: 1
+    },
+    {
+        text: '呼呼',
+        value: 2
+    },
+]
+render(<App data={data}/>, document.getElementById('root'));

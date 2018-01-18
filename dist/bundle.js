@@ -957,263 +957,46 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-// import logo from './logo.svg';
 
+var App = function (_React$PureComponent) {
+    _inherits(App, _React$PureComponent);
 
-var QueueInfo = function (_Component) {
-    _inherits(QueueInfo, _Component);
+    function App() {
+        _classCallCheck(this, App);
 
-    function QueueInfo(props) {
-        _classCallCheck(this, QueueInfo);
-
-        var _this = _possibleConstructorReturn(this, (QueueInfo.__proto__ || Object.getPrototypeOf(QueueInfo)).call(this, props));
-
-        _this.state = {
-            type: 1,
-            mainTitle: '餐厅未接入排队取号功能',
-            subTitle: '看看餐厅的实时桌位状况吧~',
-            availability: 1,
-            hint: '*以上为商家提供的信息，仅供参考',
-            tableStatusList: [{
-                tableType: 0,
-                tableTitle: '小桌',
-                availability: 1,
-                tableDesc: '紧张',
-                tableCapacity: '(1-2人)'
-            }, {
-                tableType: 1,
-                tableTitle: '中桌',
-                availability: 1,
-                tableDesc: '紧张',
-                tableCapacity: '(3-4人)'
-            }, {
-                tableType: 2,
-                tableTitle: '大桌',
-                availability: 1,
-                tableDesc: '紧张',
-                tableCapacity: '(5-6人)'
-            }, {
-                tableType: 3,
-                tableTitle: '超大桌',
-                availability: 1,
-                tableDesc: '紧张',
-                tableCapacity: '(5-6人)'
-            }, {
-                tableType: 4,
-                tableTitle: '大桌',
-                availability: 1,
-                tableDesc: '紧张',
-                tableCapacity: '(5-6人)'
-            }]
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
     }
 
-    _createClass(QueueInfo, [{
+    _createClass(App, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // const self = this;
-            // Ajax.get({
-            //     url: Ajax.apiConfig.QUEUE_INFO,
-            //     data: {
-            //         shopId
-            //     },
-            //     success(res) {
-            //         if (res.get('data') == 200) {
-            //             const result = res.get('data').toJS();
-            //             self.setState({ ...result });
-            //         }
-            //     },
-            //     error(e) {
-            //         console.log(e);
-            //     }
-            // });
-        }
-    }, {
-        key: 'getStatusText',
-        value: function getStatusText(statusCode) {
-            switch (statusCode) {
-                case 0:
-                    return '充裕';
-                case 1:
-                    return '紧张';
-                case 2:
-                    return '已满';
-                default:
-                    return '';
-            }
-        }
-    }, {
-        key: 'getStatusIconStyle',
-        value: function getStatusIconStyle(statusCode) {
-            if (this.state.type === 1) {
-                return 'icon-full';
-            }
-            switch (statusCode) {
-                case 0:
-                    return 'icon-ample';
-                case 1:
-                    return 'icon-tension';
-                case 2:
-                    return 'icon-full';
-                default:
-                    return '';
-            }
-        }
-    }, {
-        key: 'renderTitle',
-        value: function renderTitle() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'queue-section' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'title' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: "main-title" },
-                        this.state.mainTitle
-                    ),
-                    this.state.type === 0 ? _react2.default.createElement(
-                        'div',
-                        { className: 'sub-title' },
-                        this.state.subTitle
-                    ) : null
-                )
-            );
-        }
-    }, {
-        key: 'renderTableStatus',
-        value: function renderTableStatus(list) {
-            var _this2 = this;
-
-            var tableAvailability = null;
-            var tableAvailabilityStyle = null;
-            var tableStatusCaption = this.state.type === 0 ? '当前桌位情况:' : '餐厅桌位信息:';
-            switch (this.state.availability) {
-                case 0:
-                    tableAvailability = '充裕';
-                    tableAvailabilityStyle = "status-header-ample";
-                    break;
-                case 1:
-                    tableAvailability = '紧张';
-                    tableAvailabilityStyle = "status-header-tension";
-                    break;
-                case 2:
-                    tableAvailability = '已满';
-                    tableAvailabilityStyle = "status-header-full";
-                    break;
-                default:
-                    tableAvailability = '充裕';
-                    tableAvailabilityStyle = "status-header-ample";
-            }
-
-            var tableStausList = [];
-            for (var i = 0; i < list.length; i++) {
-                var arr = [];
-                arr.push(list[i]);
-                if (list[i + 1]) {
-                    arr.push(list[++i]);
+            WebPullToRefresh.init({
+                // contentEl: document.getElementById('inner'),
+                // ptrEl: document.getElementById('inner'),
+                loadingFunction: function loadingFunction() {
+                    return new Promise(function (resolve, reject) {
+                        // Run some async loading code here
+                        if (true /* if the loading worked */) {
+                                console.log('xxxx');
+                                resolve();
+                            } else {
+                            reject();
+                        }
+                    });
                 }
-                tableStausList.push(arr);
-            }
-            return _react2.default.createElement(
-                'div',
-                { className: 'queue-section' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'status-header' },
-                    _react2.default.createElement(
-                        'span',
-                        { className: 'status-header-caption' },
-                        tableStatusCaption
-                    ),
-                    this.state.type === 0 && _react2.default.createElement(
-                        'span',
-                        { className: "status-header-item " + tableAvailabilityStyle },
-                        tableAvailability
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'table-status-wrapper' },
-                    tableStausList.map(function (pair, idx) {
-
-                        return _react2.default.createElement(
-                            'div',
-                            { className: 'table-status-row', key: idx },
-                            pair.map(function (item, idx) {
-                                var itemIconStyle = _this2.getStatusIconStyle(item.availability);
-                                return _react2.default.createElement(
-                                    'div',
-                                    { className: 'table-status-item', key: idx },
-                                    _react2.default.createElement('div', { className: 'table-status-item-icon ' + itemIconStyle }),
-                                    _react2.default.createElement(
-                                        'div',
-                                        { className: 'table-status-item-info' },
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'item-info-row1' },
-                                            _react2.default.createElement(
-                                                'span',
-                                                { className: 'item-info-title' },
-                                                item.tableTitle
-                                            ),
-                                            _react2.default.createElement(
-                                                'span',
-                                                { className: 'item-info-capacity' },
-                                                item.tableCapacity
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'item-info-row2' },
-                                            item.tableDesc
-                                        )
-                                    )
-                                );
-                            })
-                        );
-                    })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'status-footer' },
-                    this.state.hint
-                )
-            );
+            });
         }
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                this.renderTitle(),
-                _react2.default.createElement(
-                    'div',
-                    { className: '' },
-                    this.renderTableStatus(this.state.tableStatusList)
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'tips-bottom' },
-                    '\u7531\u7F8E\u56E2\u6392\u961F\u63D0\u4F9B\u670D\u52A1'
-                )
-            );
-        }
-    }], [{
-        key: 'run',
-        value: function run() {
-            // sendPV({ shopId });
-            // render(<QueueInfo />, document.getElementById('queue-info'));
+            return _react2.default.createElement('div', { id: 'inner' });
         }
     }]);
 
-    return QueueInfo;
-}(_react.Component);
+    return App;
+}(_react2.default.PureComponent);
 
-(0, _reactDom.render)(_react2.default.createElement(QueueInfo, null), document.getElementById('root'));
+(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('root'));
 
 /***/ }),
 /* 15 */
@@ -18563,7 +18346,7 @@ exports = module.exports = __webpack_require__(29)(undefined);
 
 
 // module
-exports.push([module.i, "/*.App {\n  text-align: center;\n}\n\n.App-logo {\n  animation: App-logo-spin infinite 20s linear;\n  height: 80px;\n}\n\n.App-header {\n  background-color: #222;\n  height: 150px;\n  padding: 20px;\n  color: white;\n}\n\n.App-title {\n  font-size: 1.5em;\n}\n\n.App-intro {\n  font-size: large;\n}\n\n@keyframes App-logo-spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}*/\nbody {\n  background: #eee;\n}\n.queue-section {\n  background: #FFF;\n  margin-top: 10px;\n}\n.title {\n  padding: 18px 15px 19px 15px;\n}\n.main-title {\n  font-size: 18px;\n  color: #333;\n}\n.sub-title {\n  font-size: 14px;\n  color: #666;\n  margin-top: 10px;\n}\n.status-header {\n  display: flex;\n  align-items: center;\n  padding: 12px 0 10.5px 15px;\n  border-bottom: 0.5px solid #eee;\n}\n.status-header-caption {\n  font-size: 14px;\n  color: #999;\n}\n.status-header-item {\n  font-size: 12px;\n  padding: 0 8px;\n  border-radius: 2px;\n  margin-left: 4px;\n  box-sizing: border-box;\n}\n.status-header-ample {\n  border: 1px solid #04c80d;\n  color: #04c80d;\n}\n.status-header-tension {\n  border: 1px solid #ff7243;\n  color: #ff7243;\n}\n.status-header-full {\n  border: 1px solid #999;\n  color: #999;\n}\n.table-status-wrapper {\n  padding: 15px 15px 15px 30px;\n}\n.table-status-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 26px;\n}\n.table-status-row:last-child {\n  margin-bottom: 0;\n}\n.table-status-item {\n  flex: 1 0 123px;\n  display: flex;\n  align-items: flex-start;\n}\n.table-status-item-icon {\n  width: 18.5px;\n  height: 18.5px;\n  /*border: 1px solid maroon;*/\n}\n.icon-ample {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAMAAACfvvDEAAAAhFBMVEUAAACAtn6CuIKBtn+Ct4CBtn2Btn6DtX6Ct3+CtoGDt4CFuYCHuYKBtn6Bt3+Bt3+Btn6CuICBt4CBtoCAtX7////3+vfb6tq11LSmy6TJ4Mi717qv0K6HuYXE3cPA2r/Y6NeTwJKJuojr8+qXwpWEt4Pz+PLO4s2pzajt9OzQ5M+jyaLhapruAAAAFHRSTlMA9Tbaf/D4a2ZMRCwZ78XZ0p2cxuUsfu4AAAF/SURBVDjLlZWJcoMgEIYFpfE2B6B4aw6T9v3fr06bDQTNNv1nktGdb3ZXflgcWzENfM8PaOygijyXMEY4YQlxveglF2bkg2t9kCxc5WhKuC1yoEtwA5zFbmxwD+AC3T+D2wWh0a0J7ghHtF/tEe+VziCOwgqkZnRQRdVVhRrM4OG+4I+U5zqXx7xsu7bMjzKvz4+kvxa48F5c+uvIQeO1vxTwkv14DSkrcbL6O8kSkkYz6d29VrLhthqh7nvAM4p3ncnYQXfej1BciZWcUkH52KEMwqVc9ClKeEyoEyQc+3YQCxx/ro6tJ1T3HY+DtEcSPDLk6ZyGxIr1PvSJkNAnZe+R1InfrB5rj3DSBd9REnyPrPKjqkX9Bc4ae8kq30iZT+Izl/0Tm8Ge1y6Jaf6/zb9emCnDxTlqBFhdmmS6cjaH421qq3aSYrTO5vK8n+qqrerhxWzaQfDvybRFhoOeS/hkIrv/z098Jqd0fc671px3Q/zuSAgnCUPvDvw++gYoJWG5rI2xBAAAAABJRU5ErkJggg==) no-repeat;\n  background-size: 100%;\n}\n.icon-tension {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAMAAACfvvDEAAAAllBMVEUAAAD/ZjL/ZjP/ZjP/ZjP/ZzP/ZjL/ZzL/ZjL/ZzT/ZzX/aDT/Zzb/aDb/aDT/aTf/ZjL/aDT/ZzP/ZjL/ZzP/aDT/ZzT/ZjP/////9vP/08T/poj/vqn/rZH/uKH/nn3/ckL/bj3/fVL/8Ov/5t7/0MD/k2//glf/bDv/tJv/mHb/lXL/x7T/spn/6OD/xLD/oYL/kWwyj1hvAAAAF3RSTlMA9Pbw2v34fmtmTEQ5MywZ8sXSnZyAxn+gvWgAAAGPSURBVDjLnZVpc4IwEIYJBDmUAqJuwi3e4tH+/z9X25qDBDNOnw8MMO9skn13N5ZKHIXBMgij2DLy4WHbcWz38UDY+3ipm2I0AcEE4emobpYiUElWM13oJy7ouImvChcIxkGLoXAOL7HnsjCzwYAU1UdgAvn81AjMJCwDqXzqbl9U16rYd3IGVs+E85DHJqfbvKyvdZlvad4cedA/CzD7Lja7c8sDtefdpmAf+NdrFrIiBxhyoCU71E8NeE+ve7oGlTXpnzXgSYufTrKG/xTLxyzpPRmJSXvmVGxFDvtdUm2fpGSvTmSFDpjOzpWhFTxWN+WTrR5YS26Q8IgyjwTukseUISAQMUPHrBT7jN5URiKfZiWKhUdmJRa+m5UTj9eSoN03pPnizopaUpZvKc0v5JLTfKDFrOaFS+T+eN4A3B2RQ061PloTZnUpKd10pDe77e1eV/VlQ1qlN7V+dw+fVV01ndLvjAwM2IvBXDKMm7k1IHs56zJtfqLR+Yn892YySmf/n/P63WGb7g7zffQNalVv2aLoHPsAAAAASUVORK5CYII=) no-repeat;\n  background-size: 100%;\n}\n.icon-full {\n  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAMAAACfvvDEAAAAb1BMVEUAAADHx8fHx8fJycnGxsbIyMjHx8fIyMjIyMjIyMjIyMjIyMjLy8vHx8fIyMjHx8fGxsbIyMjOzs7MzMzJycnGxsbJycn////7+/vu7u7b29vm5ubj4+PW1tbf39/Pz8/29vbq6urY2NjQ0ND19fXyZBuCAAAAFXRSTlMA9fA293/Zxp1rTEQs2tnSZ2YaGX/sTANlAAABgElEQVQ4y52VCa6DIBRFGUStWttqkUFxaLv/Nf4O8kBrifkn0QRyc8E3idZUNDuzc0YrFKRgMSYE89crvhY/dXmJI+6IcJlv6miC+RqS0G/hgfAtyGEtTDHfBqdL4Yn/JDotHCMewHM9YB4Cw10p5mGIjUDi7w5G912vzeBvJnPAwbLRSj5U23Ztqx5S6QZMPyk42rWW6taAT3NTUttF+c61tezFnS+5y9Z+1KsG2BwhI8HP+QozB/X6VMbzbtf5mvVmjFBtDzdiw1Mae3yFKFRGK7/uKVovpBnhoW8HZYYun9MhnuMcz/EdTwCfEYOFy5GEHDkYePoIfwGeGQkr3T3pTiVF9c7TK5ejsDJ2eQ8rIwa15GiMFto0q8MLqE+XaakmMSmpFtoSah6EYnq+x+ejhG+ZQx85ZW/rxVcmG705jOPU9d0kReMHc7Pfh3dvDst+B1IeIEoXcykwbk7/mHVw1/BMCs9knNDtOX9czfljvu/fwQoUpKbZhV0yWqMVf3orZHzqFGjcAAAAAElFTkSuQmCC) 100%;\n  background-size: 100%;\n}\n.table-status-item-info {\n  margin-left: 10px;\n}\n.item-info-title {\n  color: #333;\n  font-size: 15px;\n}\n.item-info-capacity {\n  margin-left: 5px;\n  color: #999;\n  font-size: 12px;\n}\n.item-info-row2 {\n  color: #999;\n  font-size: 12px;\n}\n.status-footer {\n  padding: 10px 0 13.5px 16px;\n  color: #999;\n  font-size: 12px;\n  border-top: 0.5px solid #eee;\n}\n.tips-bottom {\n  color: #999;\n  font-size: 12px;\n  text-align: center;\n  padding-top: 15px;\n}\n", ""]);
+exports.push([module.i, "#inner {\n  width: 500px;\n  height: 500px;\n  background: maroon;\n}\n", ""]);
 
 // exports
 

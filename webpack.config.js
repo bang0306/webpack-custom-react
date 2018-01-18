@@ -32,7 +32,7 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'less-loader'],
                 exclude: /node_modules/
             },
-            
+
         ],
     },
     plugins: [
@@ -45,7 +45,7 @@ module.exports = {
     devServer: {
         contentBase: resolve(__dirname, 'dist'),
         compress: true,
-        port: 8888,
+        port: 8899,
         open: true
     }
 }
