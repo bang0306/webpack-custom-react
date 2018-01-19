@@ -962,6 +962,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/*
+ * props: { data: [] require}
+ */
+
 var App = function (_React$PureComponent) {
     _inherits(App, _React$PureComponent);
 
@@ -974,7 +978,6 @@ var App = function (_React$PureComponent) {
             show: true,
             currentSelectedItemIndex: 0
         };
-        _this.onCancel = _this.onCancel.bind(_this);
         return _this;
     }
 
@@ -989,10 +992,11 @@ var App = function (_React$PureComponent) {
             var _this2 = this;
 
             this.wheel = new _betterScroll2.default(this.wheelEl, {
-                preventDefault: false,
+                preventDefault: true,
+                preventDefaultException: { className: /wheel-item/ },
                 wheel: {
                     selectedIndex: 0,
-                    rotate: 5,
+                    rotate: 15,
                     adjustTime: 100,
                     wheelWrapperClass: 'wheel-scroll',
                     wheelItemClass: 'wheel-item'
@@ -1001,8 +1005,10 @@ var App = function (_React$PureComponent) {
             this.wheel.on('scrollEnd', function () {
                 var currentSelectedItemIndex = _this2.wheel.getSelectedIndex();
                 if (_this2.state.currentSelectedItemIndex != currentSelectedItemIndex) {
-                    _this2.setState({
-                        currentSelectedItemIndex: currentSelectedItemIndex
+                    _this2.setState(function () {
+                        return {
+                            currentSelectedItemIndex: currentSelectedItemIndex
+                        };
                     });
                 }
                 console.log('scrollEnd detected, currentIndex is: ' + currentSelectedItemIndex);
@@ -1010,8 +1016,8 @@ var App = function (_React$PureComponent) {
             this.wheel.enable();
         }
     }, {
-        key: 'onCancel',
-        value: function onCancel() {
+        key: 'toggleShow',
+        value: function toggleShow() {
             var _this3 = this;
 
             this.setState(function () {
@@ -1021,13 +1027,29 @@ var App = function (_React$PureComponent) {
             });
         }
     }, {
+        key: 'onCancel',
+        value: function onCancel() {
+            this.toggleShow();
+            var cancelCb = this.props.cancelCb || function () {};
+            cancelCb();
+        }
+    }, {
+        key: 'onConfirm',
+        value: function onConfirm() {
+            this.toggleShow();
+            var confirmCb = this.props.confirmCb || function () {};
+            confirmCb();
+        }
+    }, {
         key: 'onClickItem',
         value: function onClickItem(index) {
-            console.log('clicked');
-            this.setState({
-                currentSelectedItemIndex: index
+            this.setState(function () {
+                return {
+                    currentSelectedItemIndex: index
+                };
             });
             this.wheel.wheelTo(index);
+            console.log('clicked current index is ', this.state.currentSelectedItemIndex);
         }
     }, {
         key: 'render',
@@ -1037,61 +1059,56 @@ var App = function (_React$PureComponent) {
             return _react2.default.createElement(
                 'div',
                 { className: 'picker' },
-                this.state.show && _react2.default.createElement(
+                _react2.default.createElement('div', { className: 'picker-mask' }),
+                _react2.default.createElement(
                     'div',
-                    { className: 'picker-mask' },
+                    { className: 'picker-panel' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'picker-panel' },
+                        { className: 'picker-bar' },
                         _react2.default.createElement(
                             'div',
-                            { className: 'picker-bar' },
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'picker-cancel', onClick: this.onCancel },
-                                this.props.cancelText || '取消'
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'picker-title' },
-                                this.props.title || ''
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'picker-confirm' },
-                                this.props.confirmText || '确定'
-                            )
+                            { className: 'picker-cancel', onClick: this.onCancel },
+                            this.props.cancelText || '取消'
                         ),
                         _react2.default.createElement(
                             'div',
-                            { className: 'wheel-wrapper' },
+                            { className: 'picker-title' },
+                            this.props.title || ''
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'picker-confirm', onClick: this.onConfirm },
+                            this.props.confirmText || '确定'
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'wheel-wrapper' },
+                        _react2.default.createElement('div', { className: 'panel-mask panel-mask-top' }),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'wheel', ref: function ref(wheelEl) {
+                                    _this4.wheelEl = wheelEl;
+                                } },
                             _react2.default.createElement(
                                 'div',
-                                { className: 'wheel', ref: function ref(wheelEl) {
-                                        return _this4.wheelEl = wheelEl;
-                                    } },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'wheel-scroll' },
-                                    this.props.data.map(function (item, index) {
-                                        return _react2.default.createElement(
-                                            'div',
-                                            {
-                                                key: item.text,
-
-                                                className: 'wheel-item ' + (index === _this4.state.currentSelectedItemIndex ? 'wheel-item-selected' : '') },
-                                            _react2.default.createElement(
-                                                'div',
-                                                { onClick: function onClick() {
-                                                        _this4.onClickItem(index);
-                                                    } },
-                                                item.text
-                                            )
-                                        );
-                                    })
-                                )
+                                { className: 'wheel-scroll' },
+                                this.props.data.map(function (item, index) {
+                                    return _react2.default.createElement(
+                                        'div',
+                                        {
+                                            onClick: function onClick(e) {
+                                                _this4.onClickItem(index);
+                                            },
+                                            key: item.text,
+                                            className: 'wheel-item ' + (index === _this4.state.currentSelectedItemIndex ? 'wheel-item-selected' : '') },
+                                        item.text
+                                    );
+                                })
                             )
-                        )
+                        ),
+                        _react2.default.createElement('div', { className: 'panel-mask panel-mask-bottom' })
                     )
                 )
             );
@@ -1110,6 +1127,21 @@ var data = [{
 }, {
     text: '呼呼',
     value: 2
+}, {
+    text: '喵喵',
+    value: 3
+}, {
+    text: '但是',
+    value: 3
+}, {
+    text: '违反',
+    value: 2
+}, {
+    text: '手动',
+    value: 3
+}, {
+    text: '下次',
+    value: 3
 }];
 (0, _reactDom.render)(_react2.default.createElement(App, { data: data, title: '\u54C7\u54C8\u54C8\u54C8' }), document.getElementById('root'));
 
@@ -20918,7 +20950,7 @@ exports = module.exports = __webpack_require__(30)(undefined);
 
 
 // module
-exports.push([module.i, ".picker-mask {\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  background: #999;\n  opacity: 0.6;\n}\n.picker-panel {\n  position: fixed;\n  bottom: 0;\n  width: 100%;\n  height: 300px;\n  background: #fff;\n}\n.picker-panel .picker-bar {\n  display: flex;\n  justify-content: space-between;\n}\n.picker-panel .picker-bar div {\n  margin: 10px 10px;\n  font-size: 18px;\n}\n.picker-panel .picker-bar .picker-confirm {\n  color: #f63;\n}\n.picker-panel .wheel-wrapper {\n  margin-top: 120px;\n}\n.picker-panel .wheel-wrapper .wheel-scroll .wheel-item {\n  margin-top: 20px;\n  text-align: center;\n}\n.picker-panel .wheel-wrapper .wheel-scroll .wheel-item-selected {\n  font-size: 18px;\n  font-weight: bold;\n}\n", ""]);
+exports.push([module.i, ".picker {\n  padding: 0;\n}\n.picker-mask {\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  background: #666;\n  opacity: 0.6;\n}\n.picker-panel {\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 300px;\n  background: #fff;\n}\n.picker-panel .picker-bar {\n  display: flex;\n  justify-content: space-between;\n}\n.picker-panel .picker-bar div {\n  margin: 10px 10px;\n  font-size: 18px;\n}\n.picker-panel .picker-bar .picker-confirm {\n  color: #f63;\n}\n.picker-panel .wheel-wrapper {\n  margin-top: 20px;\n  padding-top: 120px;\n  overflow: hidden;\n}\n.picker-panel .wheel-wrapper .panel-mask {\n  position: absolute;\n  content: '';\n  left: 0;\n}\n.picker-panel .wheel-wrapper .panel-mask-top {\n  top: 50px;\n  width: 100%;\n  height: 135px;\n  background: #fff;\n  opacity: 0.8;\n  border-bottom: 1px solid #eee;\n  pointer-events: none;\n  z-index: 800;\n}\n.picker-panel .wheel-wrapper .panel-mask-bottom {\n  bottom: 0;\n  width: 100%;\n  height: 68px;\n  background: #fff;\n  opacity: 0.8;\n  border-top: 1px solid #eee;\n  pointer-events: none;\n  z-index: 800;\n}\n.picker-panel .wheel-wrapper .wheel-scroll .wheel-item {\n  padding: 5px;\n  text-align: center;\n  font-size: 24px;\n}\n", ""]);
 
 // exports
 
